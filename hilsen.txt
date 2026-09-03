@@ -6,4 +6,4 @@ git config --global user.email "epost@eksempel.no"	Setter e-posten din, samme gr
 2. Starte et prosjekt
 Kommando	Forklaring
 git init	Gjør mappen du står i om til et Git-repository (starter versjonskontroll her).
-git clone <url>	Laster ned en kopi aitv et eksisterende repository, f.eks. fra GitHub.
+git clone <url>	Laster ned en kopi av et eksisterende repository, f.eks. fra GitHub.
