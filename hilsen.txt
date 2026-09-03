@@ -1,4 +1,4 @@
-Hei, verden!
+"Dette er hovedversjonen"
 1. Oppsett (gjøres én gang)
 Kommando	Forklaring
 git config --global user.name "Navn"	Setter navnet ditt, som vises på alle commits du lager.
