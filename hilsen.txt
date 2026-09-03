@@ -1,5 +1,5 @@
 "Dette er hovedversjonen"
-1. Oppsett (gjøres én gang)
+1. Oppsett (gjøres én gang) widhakwdhawkjdhk
 Kommando	Forklaring
 git config --global user.name "Navn"	Setter navnet ditt, som vises på alle commits du lager.
 git config --global user.email "epost@eksempel.no"	Setter e-posten din, samme grunn som over.
