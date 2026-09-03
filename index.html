@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="En praktisk Git-guide for hverdagsflyten.">
+  <title>Git / arbeidsflyt</title>
+  <style>
+    :root { --ink:#17201f; --muted:#64706d; --paper:#f4f1e9; --card:#fffdf7; --line:#d9d7ca; --accent:#e8673f; --green:#214b43; }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:'Trebuchet MS',sans-serif; }
+    body::before { content:''; position:fixed; inset:0; pointer-events:none; opacity:.3; background-image:radial-gradient(#bbb8aa .7px,transparent .7px); background-size:16px 16px; }
+    .shell { position:relative; display:grid; grid-template-columns:240px minmax(0,1fr); max-width:1240px; margin:0 auto; min-height:100vh; }
+    aside { padding:38px 24px; border-right:1px solid var(--line); }
+    .mark { display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+    .mark-dot { width:26px; height:26px; display:grid; place-items:center; color:white; background:var(--accent); border-radius:50%; }
+    nav { margin-top:64px; position:sticky; top:36px; } nav p { color:var(--muted); font-size:11px; letter-spacing:.12em; text-transform:uppercase; }
+    nav a { display:block; padding:8px 0; color:var(--muted); font-size:14px; text-decoration:none; } nav a:hover { color:var(--accent); }
+    main { padding:38px clamp(24px,6vw,82px) 90px; } .topline { display:flex; justify-content:space-between; color:var(--muted); font-size:13px; }
+    .status::before { content:''; display:inline-block; width:8px; height:8px; margin-right:7px; background:#55a36f; border-radius:50%; }
+    header { max-width:760px; padding:clamp(65px,11vw,130px) 0 80px; } .eyebrow,.number,code,pre { font-family:Consolas,monospace; }
+    .eyebrow { color:var(--accent); font-size:12px; letter-spacing:.1em; text-transform:uppercase; }
+    h1 { margin:18px 0 20px; font-size:clamp(46px,7vw,86px); line-height:.94; letter-spacing:-.06em; } h1 em { color:var(--accent); font-style:normal; }
+    header p { max-width:530px; margin:0; color:var(--muted); font-size:18px; line-height:1.55; }
+    .search { display:flex; gap:12px; max-width:520px; margin-top:34px; padding:14px 16px; border:1px solid var(--line); background:var(--card); }
+    .search span { color:var(--accent); font:18px Consolas,monospace; } .search input { width:100%; border:0; outline:0; background:transparent; font:15px 'Trebuchet MS',sans-serif; }
+    section { scroll-margin-top:30px; margin-bottom:72px; } .section-heading { display:flex; align-items:baseline; gap:16px; margin-bottom:16px; }
+    .number { color:var(--accent); font-size:13px; } h2 { margin:0; font-size:27px; } .section-note { margin:0 0 22px 32px; color:var(--muted); font-size:14px; }
+    .commands { overflow:hidden; border:1px solid var(--line); background:var(--card); } .command { display:grid; grid-template-columns:minmax(220px,38%) 1fr auto; align-items:center; gap:20px; padding:17px 20px; border-bottom:1px solid var(--line); } .command:last-child { border-bottom:0; }
+    code { color:var(--green); white-space:pre-wrap; overflow-wrap:anywhere; } .command p { margin:0; color:var(--muted); font-size:14px; line-height:1.45; }
+    button { border:0; padding:7px 9px; color:var(--muted); background:transparent; cursor:pointer; font:11px Consolas,monospace; } button:hover { color:var(--accent); }
+    .scenario-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; } .scenario { padding:22px; border:1px solid var(--line); background:var(--card); } .scenario h3 { margin:0 0 18px; font-size:16px; line-height:1.3; }
+    pre { margin:0; color:var(--green); white-space:pre-wrap; line-height:1.8; } .empty { display:none; padding:24px; color:var(--muted); text-align:center; }
+    @media (max-width:760px) { .shell { display:block; } aside { padding:22px 20px; border-right:0; border-bottom:1px solid var(--line); } nav { display:flex; gap:14px; margin-top:22px; overflow-x:auto; position:static; } nav p { display:none; } nav a { flex:0 0 auto; } main { padding:24px 20px 60px; } header { padding:60px 0 64px; } .command { grid-template-columns:1fr auto; gap:8px; } .command p { grid-column:1 / -1; grid-row:2; } .scenario-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside><div class="mark"><span class="mark-dot">↗</span> Git guide</div><nav aria-label="Seksjoner"><p>Innhold</p><a href="#setup">01 Oppsett</a><a href="#start">02 Start</a><a href="#status">03 Oversikt</a><a href="#save">04 Lagre</a><a href="#remote">05 GitHub</a><a href="#branching">06 Branching</a><a href="#undo">07 Angre</a><a href="#scenarios">08 Situasjoner</a></nav></aside>
+    <main><div class="topline"><span>En liten referanse for store endringer</span><span class="status">Klar til bruk</span></div>
+      <header><div class="eyebrow">Git / hverdagsflyt</div><h1>Hold orden.<br><em>Jobb fritt.</em></h1><p>De viktigste Git-kommandoene samlet på ett sted. Finn kommandoen du trenger, forstå hva den gjør, og kom deg videre.</p><label class="search"><span>/</span><input id="search" type="search" placeholder="Søk etter en kommando eller forklaring..." aria-label="Søk i guiden"></label></header>
+      <div id="guide">
+        <section id="setup"><div class="section-heading"><span class="number">01</span><h2>Oppsett</h2></div><p class="section-note">Gjøres én gang på maskinen din.</p><div class="commands"><div class="command"><code>git config --global user.name "Navn"</code><p>Setter navnet som vises på commits.</p><button data-copy='git config --global user.name "Navn"'>KOPIER</button></div><div class="command"><code>git config --global user.email "epost@eksempel.no"</code><p>Knytter e-postadressen din til commits.</p><button data-copy='git config --global user.email "epost@eksempel.no"'>KOPIER</button></div></div></section>
+        <section id="start"><div class="section-heading"><span class="number">02</span><h2>Start et prosjekt</h2></div><div class="commands"><div class="command"><code>git init</code><p>Starter versjonskontroll i mappen du står i.</p><button data-copy="git init">KOPIER</button></div><div class="command"><code>git clone &lt;url&gt;</code><p>Laster ned en kopi av et eksisterende repository.</p><button data-copy="git clone &lt;url&gt;">KOPIER</button></div></div></section>
+        <section id="status"><div class="section-heading"><span class="number">03</span><h2>Se hva som skjer</h2></div><div class="commands"><div class="command"><code>git status</code><p>Viser endrede, nye og staged filer. Kommandoen du bruker aller mest.</p><button data-copy="git status">KOPIER</button></div><div class="command"><code>git log --oneline</code><p>Viser commit-historikken, én kort linje per commit.</p><button data-copy="git log --oneline">KOPIER</button></div><div class="command"><code>git diff</code><p>Viser nøyaktig hva som er endret, linje for linje.</p><button data-copy="git diff">KOPIER</button></div></div></section>
+        <section id="save"><div class="section-heading"><span class="number">04</span><h2>Lagre endringer</h2></div><p class="section-note"><strong>add</strong> = gjør klar. <strong>commit</strong> = lagre lokalt.</p><div class="commands"><div class="command"><code>git add &lt;filnavn&gt;</code><p>Legger en spesifikk fil i staging area.</p><button data-copy="git add &lt;filnavn&gt;">KOPIER</button></div><div class="command"><code>git add .</code><p>Legger alle endrede filer i staging area.</p><button data-copy="git add .">KOPIER</button></div><div class="command"><code>git commit -m "melding"</code><p>Lagrer et øyeblikksbilde med en beskrivende melding.</p><button data-copy='git commit -m "melding"'>KOPIER</button></div></div></section>
+        <section id="remote"><div class="section-heading"><span class="number">05</span><h2>Jobb med GitHub</h2></div><div class="commands"><div class="command"><code>git push</code><p>Sender lokale commits til det eksterne repositoryet.</p><button data-copy="git push">KOPIER</button></div><div class="command"><code>git pull</code><p>Henter og slår sammen nye endringer.</p><button data-copy="git pull">KOPIER</button></div><div class="command"><code>git fetch</code><p>Henter endringer uten å slå dem sammen automatisk.</p><button data-copy="git fetch">KOPIER</button></div><div class="command"><code>git remote -v</code><p>Viser hvilke eksterne repositories du er koblet til.</p><button data-copy="git remote -v">KOPIER</button></div></div></section>
+        <section id="branching"><div class="section-heading"><span class="number">06</span><h2>Branching</h2></div><p class="section-note">Jobb med flere versjoner samtidig uten å røre det som fungerer.</p><div class="commands"><div class="command"><code>git branch</code><p>Viser alle branches og hvilken du står på.</p><button data-copy="git branch">KOPIER</button></div><div class="command"><code>git switch -c &lt;navn&gt;</code><p>Lager en ny branch og bytter til den.</p><button data-copy="git switch -c &lt;navn&gt;">KOPIER</button></div><div class="command"><code>git switch &lt;navn&gt;</code><p>Bytter til en eksisterende branch.</p><button data-copy="git switch &lt;navn&gt;">KOPIER</button></div><div class="command"><code>git merge &lt;navn&gt;</code><p>Slår en annen branch inn i den du står på.</p><button data-copy="git merge &lt;navn&gt;">KOPIER</button></div></div></section>
+        <section id="undo"><div class="section-heading"><span class="number">07</span><h2>Angre ting</h2></div><div class="commands"><div class="command"><code>git restore &lt;filnavn&gt;</code><p>Forkaster lokale endringer som ikke er staged.</p><button data-copy="git restore &lt;filnavn&gt;">KOPIER</button></div><div class="command"><code>git restore --staged &lt;filnavn&gt;</code><p>Angrer en git add, men beholder filendringene.</p><button data-copy="git restore --staged &lt;filnavn&gt;">KOPIER</button></div><div class="command"><code>git revert &lt;commit&gt;</code><p>Lager en ny commit som reverserer en tidligere.</p><button data-copy="git revert &lt;commit&gt;">KOPIER</button></div></div></section>
+        <section id="scenarios"><div class="section-heading"><span class="number">08</span><h2>Tre vanlige situasjoner</h2></div><div class="scenario-grid"><article class="scenario"><h3>Jeg vil lagre endringene på GitHub</h3><pre>git add .
+git commit -m "Ny funksjon"
+git push</pre></article><article class="scenario"><h3>Jeg vil hente siste versjon</h3><pre>git pull</pre></article><article class="scenario"><h3>Jeg vil starte en ny funksjon</h3><pre>git switch -c ny-funksjon</pre></article></div></section>
+        <div class="empty" id="empty">Ingen treff. Prøv for eksempel «branch» eller «commit».</div>
+      </div>
+    </main>
+  </div>
+  <script>
+    const search = document.querySelector('#search');
+    const sections = [...document.querySelectorAll('section')];
+    const empty = document.querySelector('#empty');
+    search.addEventListener('input', () => { const query = search.value.toLowerCase().trim(); let visible = 0; sections.forEach(section => { const match = !query || section.textContent.toLowerCase().includes(query); section.hidden = !match; if (match) visible++; }); empty.style.display = visible ? 'none' : 'block'; });
+    document.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', async () => { await navigator.clipboard.writeText(button.dataset.copy); const original = button.textContent; button.textContent = 'KOPIERT'; setTimeout(() => button.textContent = original, 1200); }));
+  </script>
+</body>
+</html>
